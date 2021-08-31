@@ -1,23 +1,38 @@
 import streamlit as st
-
+import requests
 import numpy as np
 import pandas as pd
 
-st.markdown("""# This is a header
+
+url_api ='http://0.0.0.0:8000/predict'
+
+st.markdown("""# Anime Map
 ## This is a sub header
-This is text""")
+This is text
 
-df = pd.DataFrame({
-          'first column': list(range(1, 11)),
-          'second column': np.arange(10, 101, 10)
-        })
+_______________
+""")
 
-# this slider allows the user to select a number of lines
-# to display in the dataframe
-# the selected value is returned by st.slider
-line_count = st.slider('Select a line count', 1, 10, 3)
 
-# and used in order to select the displayed lines
-head_df = df.head(line_count)
+anime_input = st.text_input('Give the name of an anime!"', value='Naruto')
+predict_size_input = st.number_input('Size of desired prediction list', value=10)
+model_input = st.selectbox(
+       'Which model do you want to use?',
+       ('notation', 'completed'))
+params = {
+    'anime' : anime_input,
+    'length' : predict_size_input,
+    'model' : model_input
+}
 
-head_df
+response = requests.get(url_api, params=params).json()
+
+prediction = response['prediction']
+
+st.markdown(f'''
+_______________
+
+## You might want to watch these animes :
+${prediction}
+_______________
+''')
