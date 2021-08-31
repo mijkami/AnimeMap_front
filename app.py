@@ -37,15 +37,17 @@ GENRE_CHOICES = {
 def format_func(option):
     return GENRE_CHOICES[option]
 
-genre_input = st.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
+form = st.form(key='my-form')
+
+genre_input = form.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
 
 # anime_input = st.selectbox(
 #        'Genre of anime to predict on:',
 #        ('Naruto', 'Bleach'))
 
 #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
-predict_size_input = st.number_input('Size of desired prediction list:', value=10)
-model_input = st.selectbox(
+predict_size_input = form.number_input('Size of desired prediction list:', value=10)
+model_input = form.selectbox(
        'Model to use:',
        ('notation', 'completed'))
 
@@ -59,9 +61,9 @@ response = requests.get(url_api, params=params).json()
 prediction_list = convert_dict_to_list(response['prediction'])
 prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
 
-# button_clicked = st.button("Get Recommendations!")
+button_clicked = form.form_submit_button('Get Recommendations!')
 
-if st.button('Get Recommendations!'):
+if button_clicked:
     st.markdown(f'''
         _______________
 
@@ -72,7 +74,6 @@ if st.button('Get Recommendations!'):
         ''')
 else:
     st.write('Choose some options then click on "Get Recommendations!" button.')
-
 
 
 # st.markdown(f'''
