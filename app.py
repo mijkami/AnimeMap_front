@@ -17,7 +17,6 @@ def convert_dict_to_list(dict):
 
 st.markdown("""# Anime Map
 ## Machine-learning based recommendation system
-Fill the cells and run them to get a recommendation!
 
 _______________
 """)
@@ -30,51 +29,61 @@ GENRE_CHOICES = {
     "Toradora!": "Romance",
     "Fairy Tail": "Fantasy",
     "Cowboy Bebop": "Science-Fiction",
-    "Neon Genesis Evangelion": "Robots",
+    "Tenkuu no Escaflowne": "Robots",
     "Aria the Animation": "Slice of Life"
     }
 
 def format_func(option):
     return GENRE_CHOICES[option]
 
-form = st.form(key='my-form')
+# first collapsible box for simple Genres recommendation
+st.write("# Anime recommendations from Genres")
+with st.expander("Click me to expand!"):
+    form = st.form(key='my-form')
+    genre_input = form.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
+    predict_size_input = form.number_input('Size of desired prediction list:', value=10)
+    model_input = form.selectbox(
+        'Model to use:',
+        ('notation', 'completed'))
 
-genre_input = form.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
+    params = {
+        'anime' : genre_input,
+        'length' : predict_size_input,
+        'model' : model_input
+    }
 
-# anime_input = st.selectbox(
-#        'Genre of anime to predict on:',
-#        ('Naruto', 'Bleach'))
+    response = requests.get(url_api, params=params).json()
+    prediction_list = convert_dict_to_list(response['prediction'])
+    prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
 
-#anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
-predict_size_input = form.number_input('Size of desired prediction list:', value=10)
-model_input = form.selectbox(
-       'Model to use:',
-       ('notation', 'completed'))
+    button_clicked = form.form_submit_button('Get Recommendations!')
 
-params = {
-    'anime' : genre_input,
-    'length' : predict_size_input,
-    'model' : model_input
-}
+    if button_clicked:
+        st.markdown(f'''
+            _______________
 
-response = requests.get(url_api, params=params).json()
-prediction_list = convert_dict_to_list(response['prediction'])
-prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+            ## You might want to watch these animes :
+            ''')
+        st.write("1 - " + genre_input)
+        i = 2
+        for row in prediction_list_names:
+            st.write(f"{i} - " + row)
+            i+=1
 
-button_clicked = form.form_submit_button('Get Recommendations!')
+    else:
+        st.write('Choose some options then click on "Get Recommendations!" button.')
 
-if button_clicked:
-    st.markdown(f'''
-        _______________
+# Second collapsible box for text-input related recommendations (use st.multiselect)
+# https://docs.streamlit.io/en/stable/api.html
+# https://docs.streamlit.io/en/stable/api.html
+st.write("# Anime recommendations from Genres")
+with st.expander("Click me to expand!"):
+    form = st.form(key='my-form') 
+    anime_input = st.selectbox(
+           'Genre of anime to predict on:',
+           ('Naruto', 'Bleach'))
 
-        ## You might want to watch these animes :
-        {genre_input}
-        {prediction_list_names}
-        _______________
-        ''')
-else:
-    st.write('Choose some options then click on "Get Recommendations!" button.')
-
+    #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
 
 # st.markdown(f'''
 # _______________
@@ -84,3 +93,13 @@ else:
 # {prediction_list_names}
 # _______________
 # ''')
+
+
+CSS = """
+
+..streamlit-expanderHeader {
+    font-size: 40px;
+}
+"""
+
+st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
