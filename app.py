@@ -56,17 +56,30 @@ params = {
 }
 
 response = requests.get(url_api, params=params).json()
-
-
-
 prediction_list = convert_dict_to_list(response['prediction'])
 prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
 
-st.markdown(f'''
-_______________
+# button_clicked = st.button("Get Recommendations!")
 
-## You might want to watch these animes :
-{genre_input}
-{prediction_list_names}
-_______________
-''')
+if st.button('Get Recommendations!'):
+    st.markdown(f'''
+        _______________
+
+        ## You might want to watch these animes :
+        {genre_input}
+        {prediction_list_names}
+        _______________
+        ''')
+else:
+    st.write('Choose some options then click on "Get Recommendations!" button.')
+
+
+
+# st.markdown(f'''
+# _______________
+
+# ## You might want to watch these animes :
+# {genre_input}
+# {prediction_list_names}
+# _______________
+# ''')
