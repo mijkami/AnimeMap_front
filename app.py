@@ -23,13 +23,34 @@ _______________
 """)
 
 
-anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
+
+GENRE_CHOICES = {
+    "Fullmetal Alchemist: Brotherhood": "Action",
+    "Kimi no Na wa.": "Drama",
+    "Toradora!": "Romance",
+    "Fairy Tail": "Fantasy",
+    "Cowboy Bebop": "Science-Fiction",
+    "Neon Genesis Evangelion": "Robots",
+    "Aria the Animation": "Slice of Life"
+    }
+
+def format_func(option):
+    return GENRE_CHOICES[option]
+
+genre_input = st.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
+
+# anime_input = st.selectbox(
+#        'Genre of anime to predict on:',
+#        ('Naruto', 'Bleach'))
+
+#anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
 predict_size_input = st.number_input('Size of desired prediction list:', value=10)
 model_input = st.selectbox(
        'Model to use:',
        ('notation', 'completed'))
+
 params = {
-    'anime' : anime_input,
+    'anime' : genre_input,
     'length' : predict_size_input,
     'model' : model_input
 }
@@ -45,6 +66,7 @@ st.markdown(f'''
 _______________
 
 ## You might want to watch these animes :
+{genre_input}
 {prediction_list_names}
 _______________
 ''')
