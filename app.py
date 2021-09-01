@@ -50,32 +50,31 @@ with st.expander("Click me to expand!"):
         'Model to use:',
         ('notation', 'completed'))
 
-    params = {
-        'anime' : genre_input,
-        'length' : predict_size_input,
-        'model' : model_input
-    }
+    button_clicked = form.form_submit_button('Get Recommendations!')
 
-    response = requests.get(url_api, params=params).json()
-    prediction_list = convert_dict_to_list(response['prediction'])
-    prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+    if button_clicked:
+        params = {
+            'anime' : genre_input,
+            'length' : predict_size_input,
+            'model' : model_input
+        }
 
-button_clicked = form.form_submit_button('Get Recommendations!')
+        response = requests.get(url_api, params=params).json()
+        prediction_list = convert_dict_to_list(response['prediction'])
+        prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+        st.markdown(f'''
+            _______________
 
-if button_clicked:
-    st.markdown(f'''
-        _______________
+            ## You might want to watch these animes :
+            ''')
+        st.write("1 - " + genre_input)
+        i = 2
+        for row in prediction_list_names:
+            st.write(f"{i} - " + row)
+            i+=1
 
-        ## You might want to watch these animes :
-        ''')
-    st.write("1 - " + genre_input)
-    i = 2
-    for row in prediction_list_names:
-        st.write(f"{i} - " + row)
-        i+=1
-
-else:
-    st.write('Choose some options then click on "Get Recommendations!" button.')
+    else:
+        st.write('Choose some options then click on "Get Recommendations!" button.')
 
 # Second collapsible box for text-input related recommendations (use st.multiselect)
 # https://docs.streamlit.io/en/stable/api.html
@@ -88,7 +87,7 @@ else:
 CSS = """
 
 .streamlit-expanderHeader {
-    font-size: 40px;
+    font-size: 25px;
 }
 """
 
