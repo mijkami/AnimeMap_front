@@ -94,7 +94,7 @@ st.write("### Anime recommendations from Title")
 with st.expander("Click me to expand!"):
     keywords_input = st_tags(
     label='##### Enter the name of an anime:',
-    text="Find an anime name, hit enter and the 'Get Recommendations!' button!",
+    text="Write here and use the auto-correction system.",
     # value=['Cowboy bebop'],
     suggestions=anime_names_list,
     maxtags = 1,
