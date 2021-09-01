@@ -138,7 +138,7 @@ with st.expander("Click me to expand!"):
             params_text_input = {
             # get the correct name from the initial list (used by model) 
             # at the same index than the lower_case name in the lower_case_list (used by website text verification)
-            'anime' : anime_names_list[keywords_input_lower.index(keywords_input_lower[0])],
+            'anime' : anime_names_list[anime_names_list_lower.index(keywords_input_lower[0])],
             'length' : predict_size_input_word,
             'model' : 'notation'
             }
