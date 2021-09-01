@@ -1,10 +1,13 @@
 import streamlit as st
+from streamlit_tags import st_tags
 import requests
 import numpy as np
 import pandas as pd
 
     
 url_api ='http://0.0.0.0:8000/predict'
+anime_df = pd.read_csv("data/anime_map_data_animelist_100plus_PG_anime_name_pivot_df.csv")
+anime_names = anime_df['Name']
 
 def convert_dict_to_list(dict):
     temp = []
@@ -13,6 +16,7 @@ def convert_dict_to_list(dict):
         temp = [key,value]
         dictList.append(temp)
     return dictList
+
 
 
 st.markdown("""# Anime Map
@@ -56,48 +60,34 @@ with st.expander("Click me to expand!"):
     prediction_list = convert_dict_to_list(response['prediction'])
     prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
 
-    button_clicked = form.form_submit_button('Get Recommendations!')
+button_clicked = form.form_submit_button('Get Recommendations!')
 
-    if button_clicked:
-        st.markdown(f'''
-            _______________
+if button_clicked:
+    st.markdown(f'''
+        _______________
 
-            ## You might want to watch these animes :
-            ''')
-        st.write("1 - " + genre_input)
-        i = 2
-        for row in prediction_list_names:
-            st.write(f"{i} - " + row)
-            i+=1
+        ## You might want to watch these animes :
+        ''')
+    st.write("1 - " + genre_input)
+    i = 2
+    for row in prediction_list_names:
+        st.write(f"{i} - " + row)
+        i+=1
 
-    else:
-        st.write('Choose some options then click on "Get Recommendations!" button.')
+else:
+    st.write('Choose some options then click on "Get Recommendations!" button.')
 
 # Second collapsible box for text-input related recommendations (use st.multiselect)
 # https://docs.streamlit.io/en/stable/api.html
 # https://docs.streamlit.io/en/stable/api.html
-st.write("# Anime recommendations from Genres")
-with st.expander("Click me to expand!"):
-    form = st.form(key='my-form') 
-    anime_input = st.selectbox(
-           'Genre of anime to predict on:',
-           ('Naruto', 'Bleach'))
-
-    #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
-
-# st.markdown(f'''
-# _______________
-
-# ## You might want to watch these animes :
-# {genre_input}
-# {prediction_list_names}
-# _______________
-# ''')
 
 
+
+#TODO: add flexbox support
+#TODO: add styling : title size, add images
 CSS = """
 
-..streamlit-expanderHeader {
+.streamlit-expanderHeader {
     font-size: 40px;
 }
 """
