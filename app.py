@@ -76,7 +76,15 @@ with st.expander("Click me to expand!"):
             i+=1
 
     else:
-        st.write('Choose some options then click on "Get Recommendations!" button.')
+         st.markdown(f'''
+            How to use:
+            
+            1. pick an anime genre
+            2. **(optional)** pick the desired number of recommendations generated from your choice
+            3. **(optional)** pick the desired model used to generate the recommendations
+            4. hit the 'Get Recommendations!' button
+            5. profit!
+            ''')
 
 # Second collapsible box for text-input related recommendations (use st.multiselect)
 # https://docs.streamlit.io/en/stable/api.html
@@ -86,7 +94,7 @@ st.write("# Anime recommendations from Title")
 with st.expander("Click me to expand!"):
     keywords_input = st_tags(
     label='# Enter the name of an anime:',
-    text='Find an anime name, hit enter and the button!',
+    text="Find an anime name, hit enter and the 'Get Recommendations!' button!",
     # value=['Cowboy bebop'],
     suggestions=anime_names_list,
     maxtags = 1,
@@ -149,7 +157,15 @@ with st.expander("Click me to expand!"):
                 i+=1
 
     else:
-        st.write('Make sure to hit "Enter" after finding your anime name accordingly to the existing names')
+        st.markdown(f'''
+            How to use:
+
+            1. find an anime name (from [MyAnimeList](https://myanimelist.net/topanime.php))
+            2. write it down in the form with the help of auto-completion
+            3. hit "enter" to validate your choice (unique choice for now)
+            4. hit the 'Get Recommendations!' button
+            5. profit!
+            ''')
         #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
 
 
