@@ -116,7 +116,7 @@ with st.expander("Click me to expand!"):
         elif keywords_input_lower[0] not in anime_names_list_lower:
             st.markdown("""
                     ### This anime name is not in our anime list!
-                    #### 1. The name should be similar than the ones on [MyAnimeList](https://myanimelist.net/topanime.php)
+                    #### 1. The name should be similar to those from [MyAnimeList](https://myanimelist.net/topanime.php)
                     #### 2. Please try to use the names given by the auto-completion. 
                     #### 3. Hit the TAB button to select quickly auto-completed text.
 
