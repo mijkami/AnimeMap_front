@@ -43,7 +43,7 @@ def format_func(option):
     return GENRE_CHOICES[option]
 
 # first collapsible box for simple Genres recommendation
-st.write("# Anime recommendations from Genres")
+st.write("### Anime recommendations from Genres")
 with st.expander("Click me to expand!"):
     form = st.form(key='my-form')
     genre_input = form.selectbox("Select option", options=list(GENRE_CHOICES.keys()), format_func=format_func)
@@ -67,7 +67,7 @@ with st.expander("Click me to expand!"):
         st.markdown(f'''
             _______________
 
-            ## You might want to watch these animes :
+            #### You might want to watch these animes :
             ''')
         st.write("1 - " + genre_input)
         i = 2
@@ -90,16 +90,17 @@ with st.expander("Click me to expand!"):
 # https://docs.streamlit.io/en/stable/api.html
 # https://docs.streamlit.io/en/stable/api.html
 
-st.write("# Anime recommendations from Title")
+st.write("### Anime recommendations from Title")
 with st.expander("Click me to expand!"):
     keywords_input = st_tags(
-    label='# Enter the name of an anime:',
+    label='##### Enter the name of an anime:',
     text="Find an anime name, hit enter and the 'Get Recommendations!' button!",
     # value=['Cowboy bebop'],
     suggestions=anime_names_list,
     maxtags = 1,
     key='1'
     )
+    
     predict_size_input_word = st.number_input('Size of desired prediction list:', value=10)
     # predict_size_input2 = form.number_input('Size of desired prediction list:', value=10)
 
@@ -149,7 +150,7 @@ with st.expander("Click me to expand!"):
             st.markdown(f'''
                 _______________
 
-                ## You might want to watch these animes :
+                #### You might want to watch these animes :
                 ''')
             i = 1
             for row in prediction_list_names_text_input:
@@ -174,9 +175,33 @@ with st.expander("Click me to expand!"):
 #TODO: add flexbox support
 #TODO: add styling : title size, add images
 CSS = """
+h1 {
+    font-size: 110px;
+}
+
+h2 {
+    font-size: 40px;
+    text-align: end;
+}
+
+h3 {
+    font-size: 27px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 16px;
+}
 
 .streamlit-expanderHeader {
-    font-size: 25px;
+    font-size: 16px;
+}
+
+.block-container {
+    margin-top:-100px;
 }
 """
 
