@@ -37,7 +37,7 @@ with st.expander("Click me to expand!"):
     maxtags = 1,
     key='1'
     )
-
+    predict_size_input_word = st.number_input('Size of desired prediction list:', value=10)
     # predict_size_input2 = form.number_input('Size of desired prediction list:', value=10)
 
     button_clicked_2 = st.button('Get Recommendations!')
@@ -70,7 +70,7 @@ with st.expander("Click me to expand!"):
         else:
             params_text_input = {
             'anime' : keywords_input,
-            'length' : 10,
+            'length' : predict_size_input_word,
             'model' : 'notation'
             }
 
