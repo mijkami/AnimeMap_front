@@ -127,7 +127,8 @@ with st.expander("Click me to expand!"):
             st.image('data/images/keyword_input_example_autocompletion.png')
         else:
             params_text_input = {
-            # get the correct name from the initial list at the same index than the lower_case name in the lower_case list
+            # get the correct name from the initial list (used by model) 
+            # at the same index than the lower_case name in the lower_case_list (used by website text verification)
             'anime' : anime_names_list[keywords_input_lower.index(keywords_input_lower[0])],
             'length' : predict_size_input_word,
             'model' : 'notation'
