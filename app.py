@@ -147,6 +147,7 @@ with st.expander("Click me to expand!"):
             prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
             prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
 
+            #TODO: show the list result as thumbnails for each anime
             st.markdown(f'''
                 _______________
 
