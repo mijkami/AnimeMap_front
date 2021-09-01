@@ -23,42 +23,70 @@ def convert_dict_to_list(dict):
 st.markdown("""# Anime Map
 ## Machine-learning based recommendation system
 
+
 _______________
 """)
 
-keywords_input = st_tags(
-label='# Enter the name of an anime:',
-text='Press enter to add more',
-value=['Cowboy Bebop'],
-suggestions=anime_names_list,
-maxtags = 1,
-key='1'
-)
 
-# predict_size_input2 = form.number_input('Size of desired prediction list:', value=10)
-params2 = {
-    'anime' : keywords_input,
-    'length' : 10,
-    'model' : 'notation'
-}
+with st.expander("Click me to expand!"):
+    keywords_input = st_tags(
+    label='# Enter the name of an anime:',
+    text='Find an anime name, hit enter and the button!',
+    # value=['Cowboy bebop'],
+    suggestions=anime_names_list,
+    maxtags = 1,
+    key='1'
+    )
 
-response2 = requests.get(url_api, params=params2).json()
-prediction_list2 = convert_dict_to_list(response2['prediction'])
-prediction_list_names2 = [prediction_list2[i][0] for i in range(len(prediction_list2))]
+    # predict_size_input2 = form.number_input('Size of desired prediction list:', value=10)
 
-button_clicked_2 = st.button('Get Recommendations!')
+    button_clicked_2 = st.button('Get Recommendations!')
 
-if button_clicked_2:
-    st.markdown(f'''
-        _______________
+    if button_clicked_2:
+        keywords_input_word = keywords_input[0].replace(keywords_input[0][0], keywords_input[0][0].upper(), 1)
+        keywords_input = [keywords_input_word]
+        # st.write(keywords_input)
+        
 
-        ## You might want to watch these animes :
-        ''')
-    i = 1
-    for row in prediction_list_names2:
-        st.write(f"{i} - " + row)
-        i+=1
+        if keywords_input == []:
+            st.markdown("""
+                    ### Your input was empty!
+                    #### It should look like this after hitting enter:
+                    """)
+            st.image('data/images/keyword_input_example_valid_tag.png')
+        elif keywords_input[0] not in anime_names_list:
+            st.markdown("""
+                    ### This anime name is not in our anime list!
+                    #### 1. The name should be similar than the ones on [MyAnimeList](https://myanimelist.net/topanime.php)
+                    #### 2. Please try to use the names given by the auto-completion. 
+                    #### 3. Hit the TAB button to select quickly auto-completed text.
 
-else:
-    st.write('Choose some options then click on "Get Recommendations!" button.')
-    #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
+                    
+                    _______________
+                    """)
+            st.write('Autocompletion looks like this:')
+            st.image('data/images/keyword_input_example_autocompletion.png')
+        else:
+            params_text_input = {
+            'anime' : keywords_input,
+            'length' : 10,
+            'model' : 'notation'
+            }
+
+            response_text_input = requests.get(url_api, params=params_text_input).json()
+            prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
+            prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
+
+            st.markdown(f'''
+                _______________
+
+                ## You might want to watch these animes :
+                ''')
+            i = 1
+            for row in prediction_list_names_text_input:
+                st.write(f"{i} - " + row)
+                i+=1
+
+    else:
+        st.write('Make sure to hit "Enter" after finding your anime name accordingly to the existing names')
+        #anime_input = st.text_input('Name of the anime to predict on:', value='Naruto')
