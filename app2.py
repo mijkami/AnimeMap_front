@@ -43,9 +43,10 @@ with st.expander("Click me to expand!"):
     button_clicked_2 = st.button('Get Recommendations!')
 
     if button_clicked_2:
-        keywords_input_word = keywords_input[0].replace(keywords_input[0][0], keywords_input[0][0].upper(), 1)
-        keywords_input = [keywords_input_word]
-        # st.write(keywords_input)
+        if keywords_input != []:
+            keywords_input_word = keywords_input[0].replace(keywords_input[0][0], keywords_input[0][0].upper(), 1)
+            keywords_input = [keywords_input_word]
+            # st.write(keywords_input)
         
 
         if keywords_input == []:
