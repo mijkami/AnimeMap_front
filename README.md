@@ -7,7 +7,7 @@ Streamlit frontend implementation for the [anime_map project](https://github.com
 
 # Run the server
 ## Run locally
-- > make streamlit run app.py
+- > make run_server
 - access http://localhost:8501/ (or the url provided in the terminal)
 
 
