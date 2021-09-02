@@ -3,6 +3,8 @@ from streamlit_tags import st_tags
 import requests
 import numpy as np
 import pandas as pd
+from bs4 import BeautifulSoup
+import requests
 
 #local_url:
 url_api ='http://0.0.0.0:8000/predict'
@@ -23,6 +25,13 @@ def convert_dict_to_list(dict):
         dictList.append(temp)
     return dictList
 
+def get_anime_thumbnail_link_from_id(anime_id):
+    html_page = requests.get(f'https://myanimelist.net/anime/{anime_id}/')
+    soup = BeautifulSoup(html_page.content, 'html.parser')
+    content = soup.find(id="content")
+    children = content.findChildren("img")
+    return children[0]['data-src']
+
 
 
 st.markdown("""# Anime Map
@@ -30,7 +39,6 @@ st.markdown("""# Anime Map
 
 _______________
 """)
-
 
 
 GENRE_CHOICES = {
@@ -55,32 +63,56 @@ with st.expander("Click me to expand!"):
     model_input = form.selectbox(
         'Model to use:',
         ('notation', 'completed'))
+    thumbnail_mode = form.checkbox('Thumbnail mode (WARNING: slow!)',value=False)
 
     button_clicked = form.form_submit_button('Get Recommendations!')
 
     if button_clicked:
-        params = {
-            'anime' : genre_input,
-            'length' : predict_size_input,
-            'model' : model_input
-        }
+        if thumbnail_mode == False:
+            params = {
+                'anime' : genre_input,
+                'length' : predict_size_input,
+                'model' : model_input
+            }
 
-        response = requests.get(url_api, params=params).json()
-        prediction_list = convert_dict_to_list(response['prediction'])
-        # prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
-        st.markdown(f'''
-            _______________
+            response = requests.get(url_api, params=params).json()
+            prediction_list = convert_dict_to_list(response['prediction'])
+            # prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+            st.markdown(f'''
+                _______________
 
-            #### You might want to watch these animes :
-            ''')
-        # st.write("1 - " + genre_input)
-        i = 1
-        # for row in prediction_list_names:
-        #     st.write(f"{i} - " + row)
-        #     i+=1
-        for row in range(len(prediction_list)):
-            st.markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                #### You might want to watch these animes :
+                ''')
+            # st.write("1 - " + genre_input)
+            i = 1
+            # for row in prediction_list_names:
+            #     st.write(f"{i} - " + row)
+            #     i+=1
+            for row in range(len(prediction_list)):
+                st.markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+        else:
+            params = {
+                'anime' : genre_input,
+                'length' : predict_size_input,
+                'model' : model_input
+            }
 
+            response = requests.get(url_api, params=params).json()
+            prediction_list = convert_dict_to_list(response['prediction'])
+            # prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+            st.markdown(f'''
+                _______________
+
+                #### You might want to watch these animes :
+                ''')
+            # st.write("1 - " + genre_input)
+            i = 1
+            # for row in prediction_list_names:
+            #     st.write(f"{i} - " + row)
+            #     i+=1
+            for row in range(len(prediction_list)):
+                st.markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                st.markdown(f'''![image test]({get_anime_thumbnail_link_from_id(prediction_list[row][1]['anime_id'])})''')
     else:
          st.markdown(f'''
             How to use:
@@ -109,6 +141,8 @@ with st.expander("Click me to expand!"):
     
     predict_size_input_word = st.number_input('Size of desired prediction list:', value=10)
     # predict_size_input2 = form.number_input('Size of desired prediction list:', value=10)
+    thumbnail_mode_input_word = st.checkbox('Thumbnail mode (WARNING: slow!)',value=False)
+
 
     button_input_word = st.button('Get Recommendations!')
 
@@ -141,31 +175,58 @@ with st.expander("Click me to expand!"):
             st.write('Autocompletion looks like this:')
             st.image('data/images/keyword_input_example_autocompletion.png')
         else:
-            params_text_input = {
-            # get the correct name from the initial list (used by model) 
-            # at the same index than the lower_case name in the lower_case_list (used by website text verification)
-            'anime' : anime_names_list[anime_names_list_lower.index(keywords_input_lower[0])],
-            'length' : predict_size_input_word,
-            'model' : 'notation'
-            }
+            if thumbnail_mode_input_word == False:
+                params_text_input = {
+                # get the correct name from the initial list (used by model) 
+                # at the same index than the lower_case name in the lower_case_list (used by website text verification)
+                'anime' : anime_names_list[anime_names_list_lower.index(keywords_input_lower[0])],
+                'length' : predict_size_input_word,
+                'model' : 'notation'
+                }
 
-            response_text_input = requests.get(url_api, params=params_text_input).json()
-            prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
-            # prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
+                response_text_input = requests.get(url_api, params=params_text_input).json()
+                prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
+                # prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
 
-            #TODO: show the list result as thumbnails for each anime
-            st.markdown(f'''
-                _______________
+                #TODO: show the list result as thumbnails for each anime
+                st.markdown(f'''
+                    _______________
 
-                #### You might want to watch these animes :
-                ''')
-            i = 1
-            # for row in prediction_list_names_text_input:
-            #     st.write(f"{i} - " + row)
-            #     i+=1
-            for row in range(len(prediction_list_text_input)):
-                st.markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                    #### You might want to watch these animes :
+                    ''')
+                i = 1
+                # for row in prediction_list_names_text_input:
+                #     st.write(f"{i} - " + row)
+                #     i+=1
+                for row in range(len(prediction_list_text_input)):
+                    st.markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+            else:
+                params_text_input = {
+                # get the correct name from the initial list (used by model) 
+                # at the same index than the lower_case name in the lower_case_list (used by website text verification)
+                'anime' : anime_names_list[anime_names_list_lower.index(keywords_input_lower[0])],
+                'length' : predict_size_input_word,
+                'model' : 'notation'
+                }
 
+                response_text_input = requests.get(url_api, params=params_text_input).json()
+                prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
+                # prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
+
+                #TODO: show the list result as thumbnails for each anime
+                st.markdown(f'''
+                    _______________
+
+                    #### You might want to watch these animes :
+                    ''')
+                i = 1
+                # for row in prediction_list_names_text_input:
+                #     st.write(f"{i} - " + row)
+                #     i+=1
+                for row in range(len(prediction_list_text_input)):
+                    st.markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                    st.markdown(f'''![image test]({get_anime_thumbnail_link_from_id(prediction_list_text_input[row][1]['anime_id'])})''')
+    
 
     else:
         st.markdown(f'''
