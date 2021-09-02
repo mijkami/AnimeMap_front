@@ -4,8 +4,12 @@ import requests
 import numpy as np
 import pandas as pd
 
-    
-url_api ='http://0.0.0.0:8000/predict'
+#local_url:
+# url_api ='http://0.0.0.0:8000/predict'
+
+#gcc api_url:
+url_api ='https://animemapapi-kmovigytdq-ey.a.run.app/predict'
+
 anime_df = pd.read_csv("data/anime_map_data_animelist_100plus_PG_anime_name_pivot_df.csv")
 # anime_names = anime_df['Name']
 anime_names_list = anime_df["Name"].tolist()
