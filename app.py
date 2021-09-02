@@ -110,9 +110,15 @@ with st.expander("Click me to expand!"):
             # for row in prediction_list_names:
             #     st.write(f"{i} - " + row)
             #     i+=1
+            cols = st.columns(2)
             for row in range(len(prediction_list)):
-                st.markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
-                st.markdown(f'''![image test]({get_anime_thumbnail_link_from_id(prediction_list[row][1]['anime_id'])})''')
+                if row % 2 == 0:
+                    cols[0].markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                    cols[0].markdown(f'''[![image test]({get_anime_thumbnail_link_from_id(prediction_list[row][1]['anime_id'])})](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                else:
+                    cols[1].markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                    cols[1].markdown(f'''[![image test]({get_anime_thumbnail_link_from_id(prediction_list[row][1]['anime_id'])})](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
+                
     else:
          st.markdown(f'''
             How to use:
@@ -223,10 +229,15 @@ with st.expander("Click me to expand!"):
                 # for row in prediction_list_names_text_input:
                 #     st.write(f"{i} - " + row)
                 #     i+=1
+                cols = st.columns(2)
                 for row in range(len(prediction_list_text_input)):
-                    st.markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
-                    st.markdown(f'''![image test]({get_anime_thumbnail_link_from_id(prediction_list_text_input[row][1]['anime_id'])})''')
-    
+                    if row % 2 == 0:
+                        cols[0].markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                        cols[0].markdown(f'''[![image test]({get_anime_thumbnail_link_from_id(prediction_list_text_input[row][1]['anime_id'])})](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                    else:
+                        cols[1].markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                        cols[1].markdown(f'''[![image test]({get_anime_thumbnail_link_from_id(prediction_list_text_input[row][1]['anime_id'])})](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+                    
 
     else:
         st.markdown(f'''
