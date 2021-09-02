@@ -5,10 +5,10 @@ import numpy as np
 import pandas as pd
 
 #local_url:
-# url_api ='http://0.0.0.0:8000/predict'
+url_api ='http://0.0.0.0:8000/predict'
 
 #gcc api_url:
-url_api ='https://animemapapi-kmovigytdq-ey.a.run.app/predict'
+# url_api ='https://animemapapi-kmovigytdq-ey.a.run.app/predict'
 
 anime_df = pd.read_csv("data/anime_map_data_animelist_100plus_PG_anime_name_pivot_df.csv")
 # anime_names = anime_df['Name']
@@ -67,17 +67,19 @@ with st.expander("Click me to expand!"):
 
         response = requests.get(url_api, params=params).json()
         prediction_list = convert_dict_to_list(response['prediction'])
-        prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
+        # prediction_list_names = [prediction_list[i][0] for i in range(len(prediction_list))]
         st.markdown(f'''
             _______________
 
             #### You might want to watch these animes :
             ''')
-        st.write("1 - " + genre_input)
-        i = 2
-        for row in prediction_list_names:
-            st.write(f"{i} - " + row)
-            i+=1
+        # st.write("1 - " + genre_input)
+        i = 1
+        # for row in prediction_list_names:
+        #     st.write(f"{i} - " + row)
+        #     i+=1
+        for row in range(len(prediction_list)):
+            st.markdown(f'''{row + 1} - [{prediction_list[row][0]}](https://myanimelist.net/anime/{prediction_list[row][1]['anime_id']}/)''')
 
     else:
          st.markdown(f'''
@@ -149,7 +151,7 @@ with st.expander("Click me to expand!"):
 
             response_text_input = requests.get(url_api, params=params_text_input).json()
             prediction_list_text_input = convert_dict_to_list(response_text_input['prediction'])
-            prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
+            # prediction_list_names_text_input = [prediction_list_text_input[i][0] for i in range(len(prediction_list_text_input))]
 
             #TODO: show the list result as thumbnails for each anime
             st.markdown(f'''
@@ -158,9 +160,12 @@ with st.expander("Click me to expand!"):
                 #### You might want to watch these animes :
                 ''')
             i = 1
-            for row in prediction_list_names_text_input:
-                st.write(f"{i} - " + row)
-                i+=1
+            # for row in prediction_list_names_text_input:
+            #     st.write(f"{i} - " + row)
+            #     i+=1
+            for row in range(len(prediction_list_text_input)):
+                st.markdown(f'''{row + 1} - [{prediction_list_text_input[row][0]}](https://myanimelist.net/anime/{prediction_list_text_input[row][1]['anime_id']}/)''')
+
 
     else:
         st.markdown(f'''
