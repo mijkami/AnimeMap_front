@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup
 import requests
 
 #local_url:
-url_api ='http://0.0.0.0:8000/predict'
+# url_api ='http://0.0.0.0:8000/predict'
 
 #gcc api_url:
-# url_api ='https://animemapapi-kmovigytdq-ey.a.run.app/predict'
+url_api ='https://animemapapi-kmovigytdq-ey.a.run.app/predict'
 
 anime_df = pd.read_csv("data/anime_map_data_animelist_100plus_PG_anime_name_pivot_df.csv")
 # anime_names = anime_df['Name']
